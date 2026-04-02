@@ -1,0 +1,84 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Grafic Performanta Sortare</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; padding: 40px; }
+            .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 1000px; margin: auto; }
+            h2 { text-align: center; color: #333; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Analiza Algoritmi de Sortare</h2>
+            <canvas id="canvas"></canvas>
+        </div>
+        <script>
+            new Chart(document.getElementById('canvas'), {
+                type: 'line',
+                data: { datasets: [{
+            label: 'Bubble',
+            data: [{x: 10, y: 1.1766600131522865e-05}, {x: 50, y: 0.00018568019998201635}, {x: 100, y: 0.0007473285999294603}, {x: 1000, y: 0.14416309999942314}, {x: 5000, y: 4.794057740000426}],
+            borderColor: '#FF3D67',
+            backgroundColor: '#FF3D67',
+            fill: false,
+            borderWidth: 3
+        }, {
+            label: 'Insertion',
+            data: [{x: 10, y: 7.098000132828019e-06}, {x: 50, y: 0.0001035252000001492}, {x: 100, y: 0.0003899618000141345}, {x: 1000, y: 0.057310759997926654}, {x: 5000, y: 1.399560600001132}],
+            borderColor: '#059BFF',
+            backgroundColor: '#059BFF',
+            fill: false,
+            borderWidth: 3
+        }, {
+            label: 'Selection',
+            data: [{x: 10, y: 1.1739799927454443e-05}, {x: 50, y: 0.00010623779983143323}, {x: 100, y: 0.00039274379996641074}, {x: 1000, y: 0.050860160002775955}, {x: 5000, y: 1.4824005999980727}],
+            borderColor: '#FFC233',
+            backgroundColor: '#FFC233',
+            fill: false,
+            borderWidth: 3
+        }, {
+            label: 'Merge',
+            data: [{x: 10, y: 5.324439994001295e-05}, {x: 50, y: 0.0002969268000742886}, {x: 100, y: 0.0006182910000206902}, {x: 1000, y: 0.007583220001833979}, {x: 5000, y: 0.050499459999264217}],
+            borderColor: '#22CECE',
+            backgroundColor: '#22CECE',
+            fill: false,
+            borderWidth: 3
+        }, {
+            label: 'Quick',
+            data: [{x: 10, y: 4.001859993149992e-05}, {x: 50, y: 0.0002149889999127481}, {x: 100, y: 0.000478999200015096}, {x: 1000, y: 0.005354159999114927}, {x: 5000, y: 0.018864759999269155}],
+            borderColor: '#9966FF',
+            backgroundColor: '#9966FF',
+            fill: false,
+            borderWidth: 3
+        }, {
+            label: 'Python',
+            data: [{x: 10, y: 2.46400004834868e-06}, {x: 50, y: 6.264200113946572e-06}, {x: 100, y: 1.2670999945839867e-05}, {x: 1000, y: 0.0001990400007343851}, {x: 5000, y: 0.0009890600020298734}],
+            borderColor: '#FB9E40',
+            backgroundColor: '#FB9E40',
+            fill: false,
+            borderWidth: 3
+        }] },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { 
+                            type: 'logarithmic', 
+                            title: { display: true, text: 'Numar Elemente (N) - Scara Logaritmica', font: { weight: 'bold' } } 
+                        },
+                        y: { 
+                            type: 'logarithmic', 
+                            title: { display: true, text: 'Timp Executie (Secunde) - Scara Logaritmica', font: { weight: 'bold' } } 
+                        }
+                    },
+                    plugins: { 
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        </script>
+    </body>
+    </html>
+    

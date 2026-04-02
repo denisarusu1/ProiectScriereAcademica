@@ -1,0 +1,31 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Rezultate Sortare</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body>
+        <div style="width: 80%; margin: auto;">
+            <canvas id="myChart"></canvas>
+        </div>
+        <script>
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [{'label': 'Bubble', 'data': [{'x': 10, 'y': 1.1766600131522865e-05}, {'x': 50, 'y': 0.00018568019998201635}, {'x': 100, 'y': 0.0007473285999294603}, {'x': 1000, 'y': 0.14416309999942314}, {'x': 5000, 'y': 4.794057740000426}], 'borderColor': '#FF6384', 'fill': False, 'tension': 0.1}, {'label': 'Insertion', 'data': [{'x': 10, 'y': 7.098000132828019e-06}, {'x': 50, 'y': 0.0001035252000001492}, {'x': 100, 'y': 0.0003899618000141345}, {'x': 1000, 'y': 0.057310759997926654}, {'x': 5000, 'y': 1.399560600001132}], 'borderColor': '#36A2EB', 'fill': False, 'tension': 0.1}, {'label': 'Selection', 'data': [{'x': 10, 'y': 1.1739799927454443e-05}, {'x': 50, 'y': 0.00010623779983143323}, {'x': 100, 'y': 0.00039274379996641074}, {'x': 1000, 'y': 0.050860160002775955}, {'x': 5000, 'y': 1.4824005999980727}], 'borderColor': '#FFCE56', 'fill': False, 'tension': 0.1}, {'label': 'Merge', 'data': [{'x': 10, 'y': 5.324439994001295e-05}, {'x': 50, 'y': 0.0002969268000742886}, {'x': 100, 'y': 0.0006182910000206902}, {'x': 1000, 'y': 0.007583220001833979}, {'x': 5000, 'y': 0.050499459999264217}], 'borderColor': '#4BC0C0', 'fill': False, 'tension': 0.1}, {'label': 'Quick', 'data': [{'x': 10, 'y': 4.001859993149992e-05}, {'x': 50, 'y': 0.0002149889999127481}, {'x': 100, 'y': 0.000478999200015096}, {'x': 1000, 'y': 0.005354159999114927}, {'x': 5000, 'y': 0.018864759999269155}], 'borderColor': '#9966FF', 'fill': False, 'tension': 0.1}, {'label': 'Python', 'data': [{'x': 10, 'y': 2.46400004834868e-06}, {'x': 50, 'y': 6.264200113946572e-06}, {'x': 100, 'y': 1.2670999945839867e-05}, {'x': 1000, 'y': 0.0001990400007343851}, {'x': 5000, 'y': 0.0009890600020298734}], 'borderColor': '#FF9F40', 'fill': False, 'tension': 0.1}]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { title: { display: true, text: 'Timp de Executie (Scara Logaritmica)' } },
+                    scales: {
+                        x: { type: 'logarithmic', title: { display: true, text: 'Elemente (N)' } },
+                        y: { type: 'logarithmic', title: { display: true, text: 'Timp (secunde)' } }
+                    }
+                }
+            });
+        </script>
+    </body>
+    </html>
+    
