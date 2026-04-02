@@ -83,7 +83,7 @@ def genereaza_experiment_date():
                             i, j = random.randint(0, n-1), random.randint(0, n-1)
                             v[i], v[j] = v[j], v[i]
                     elif tip == "flat":
-                        # Listă lungă, dar cu puține elemente distincte (ex: doar 0, 1, 2)
+                        
                         v = [random.randint(0, 5) for _ in range(n)]
                     
                     f.write(" ".join(map(str, v)) + "\n")
@@ -110,7 +110,7 @@ def ruleaza_test(fisier, algoritmi, writer):
     print(f"\nExperiment: {tip.upper()} | N={n} | Probe={len(toate_listele)}")
 
     for nume, alg in algoritmi.items():
-        # Skip logic pentru a nu aștepta ore la rând
+       
         if n > 5000 and nume in ["Bubble", "Insertion", "Selection"]:
             writer.writerow([n, tip, nume, "SKIP", "SKIP"])
             continue
