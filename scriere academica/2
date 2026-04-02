@@ -1,0 +1,145 @@
+import random
+import time
+import os
+import tracemalloc
+import csv
+import sys
+
+
+sys.setrecursionlimit(10**6)
+
+
+def bubble_sort(v):
+    a = v.copy()
+    n = len(a)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if a[j] > a[j + 1]: a[j], a[j + 1] = a[j + 1], a[j]
+    return a
+
+def insertion_sort(v):
+    a = v.copy()
+    for i in range(1, len(a)):
+        key = a[i]; j = i - 1
+        while j >= 0 and a[j] > key:
+            a[j + 1] = a[j]; j -= 1
+        a[j + 1] = key
+    return a
+
+def selection_sort(v):
+    a = v.copy()
+    n = len(a)
+    for i in range(n):
+        idx = i
+        for j in range(i+1, n):
+            if a[j] < a[idx]: idx = j
+        a[i], a[idx] = a[idx], a[i]
+    return a
+
+def merge_sort(v):
+    if len(v) <= 1: return v
+    mid = len(v) // 2
+    return merge(merge_sort(v[:mid]), merge_sort(v[mid:]))
+
+def merge(left, right):
+    res = []; i = j = 0
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]: res.append(left[i]); i += 1
+        else: res.append(right[j]); j += 1
+    res.extend(left[i:]); res.extend(right[j:])
+    return res
+
+def quick_sort(v):
+    if len(v) <= 1: return v
+    pivot = v[len(v)//2]
+    st = [x for x in v if x < pivot]; mij = [x for x in v if x == pivot]; dr = [x for x in v if x > pivot]
+    return quick_sort(st) + mij + quick_sort(dr)
+
+
+def genereaza_experiment_date():
+   
+    config = [
+        (10, 1000), (50, 1000), (100, 500),   # Liste mici, multe repetiții
+        (1000, 10), (10000, 5), (100000, 1)   # Liste mari, repetiții puține
+        # Poți adăuga (1000000, 1) dacă ai RAM suficient
+    ]
+    
+    tipuri = ["random", "sorted", "reverse", "nearly_sorted", "flat"]
+    
+    for n, reps in config:
+        for tip in tipuri:
+            nume_f = f"{tip}_{n}.txt"
+            with open(nume_f, "w") as f:
+                for _ in range(reps):
+                    if tip == "random":
+                        v = [random.randint(0, 10**6) for _ in range(n)]
+                    elif tip == "sorted":
+                        v = sorted([random.randint(0, 10**6) for _ in range(n)])
+                    elif tip == "reverse":
+                        v = sorted([random.randint(0, 10**6) for _ in range(n)], reverse=True)
+                    elif tip == "nearly_sorted":
+                        v = sorted([random.randint(0, 10**6) for _ in range(n)])
+                        for _ in range(max(1, n // 10)):
+                            i, j = random.randint(0, n-1), random.randint(0, n-1)
+                            v[i], v[j] = v[j], v[i]
+                    elif tip == "flat":
+                        # Listă lungă, dar cu puține elemente distincte (ex: doar 0, 1, 2)
+                        v = [random.randint(0, 5) for _ in range(n)]
+                    
+                    f.write(" ".join(map(str, v)) + "\n")
+    print(">>> Toate datele de test au fost generate conform cerințelor.")
+
+# --- MĂSURARE ---
+def masoara(func, lista):
+    tracemalloc.start()
+    t1 = time.perf_counter()
+    func(lista)
+    t2 = time.perf_counter()
+    _, peak = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
+    return t2 - t1, peak / 1024
+
+def ruleaza_test(fisier, algoritmi, writer):
+    parts = fisier.replace(".txt", "").split("_")
+    n = int(parts[-1])
+    tip = "_".join(parts[:-1])
+
+    with open(fisier, "r") as f:
+        toate_listele = [list(map(int, line.split())) for line in f]
+
+    print(f"\nExperiment: {tip.upper()} | N={n} | Probe={len(toate_listele)}")
+
+    for nume, alg in algoritmi.items():
+        # Skip logic pentru a nu aștepta ore la rând
+        if n > 5000 and nume in ["Bubble", "Insertion", "Selection"]:
+            writer.writerow([n, tip, nume, "SKIP", "SKIP"])
+            continue
+
+        t_total, m_total = 0, 0
+        for l in toate_listele:
+            t, m = masoara(alg, l)
+            t_total += t; m_total += m
+        
+        t_avg = t_total / len(toate_listele)
+        m_avg = m_total / len(toate_listele)
+        print(f"{nume:12}: {t_avg:.6f}s")
+        writer.writerow([n, tip, nume, t_avg, m_avg])
+
+if __name__ == "__main__":
+    genereaza_experiment_date()
+    
+    algs = {
+        "Bubble": bubble_sort, "Insertion": insertion_sort, "Selection": selection_sort,
+        "Merge": merge_sort, "Quick": quick_sort, "Python": sorted
+    }
+
+    fisiere = sorted([f for f in os.listdir() if f.endswith(".txt")], 
+                    key=lambda x: int(x.split('_')[-1].split('.')[0]))
+
+    with open("raport_experimental.csv", "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["N", "Structura_Date", "Algoritm", "Timp_Mediu_Sec", "Memorie_Medie_KB"])
+        for fis in fisiere:
+            ruleaza_test(fis, algs, w)
+
+    print("\n Rezultatele sunt în 'raport_experimental.csv'.")
